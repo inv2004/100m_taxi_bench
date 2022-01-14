@@ -10,6 +10,6 @@ time in ms:
 | q4 | nyi | 1523 | 752        |
 
 
-* li 2021.10.21
-* KDB+ 4.0 2021.07.12 l64/ 4(16)core
+* li 2021.10.21 2 12 (c)shakti 2.0
+* KDB+ 4.0 2021.07.12 Copyright (C) 1993-2021 Kx Systems l64/ 4(16)core
 * ClickHouse version 21.12.3.32
