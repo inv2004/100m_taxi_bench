@@ -1,3 +1,5 @@
+/-s 4
+
 \mkdir -p data
 \l data
 
@@ -13,3 +15,6 @@ min {system"t:1 select avg am by pc from trips"} each key r
 min {system"t:1 select count ct by date.month,pc from trips"} each key r
 min {system"t:1 select count ct by date.month,pc,floor td from trips"} each key r
 
+\rm -rf ../data
+
+\\
