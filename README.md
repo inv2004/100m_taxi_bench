@@ -19,3 +19,7 @@ time in ms:
 * k9 li 2021.10.21 2 12 (c)shakti 2.0
 * KDB+ 4.0 2021.07.12 l64/ 4(16)core
 * ClickHouse version 21.12.3.32
+
+## TODO
+- not sure in k9-q3 results
+- would be good to retest q with parted mem-data only like k9
