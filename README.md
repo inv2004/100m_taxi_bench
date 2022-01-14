@@ -1,3 +1,5 @@
+# 100 Millions Taxi Rides benchmark
+
 CPU: Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz DDR 2666
 
 365 days x 380000 rows x 10 bytes => ~1.387Gb
