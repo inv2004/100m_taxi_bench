@@ -20,5 +20,5 @@ time in ms:
 * ClickHouse version 21.12.3.32
 
 ## TODO
-- not sure in k9-q3 results
+- not sure about k9-q3 results
 - would be good to retest q with parted mem-data only like k9
