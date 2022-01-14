@@ -9,7 +9,7 @@ f:{[x;y] ([]dt:`p#x#y;ct:"x"$x?4;pc:"x"$x?9;am:"e"$x?50e;td:"e"$x?100e)}
 
 \l .
 
-r:10
+r:100
 min {system"t:1 select count pc by ct from trips"} each key r
 min {system"t:1 select avg am by pc from trips"} each key r
 min {system"t:1 select count ct by date.month,pc from trips"} each key r
