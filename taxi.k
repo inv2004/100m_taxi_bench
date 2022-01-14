@@ -14,3 +14,5 @@ min{."\\t:1 select count by d.month,pc,_ td from t"}'!r
 61
 tab
 !nyi
+
+select count by d.year,pc from t
