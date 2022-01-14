@@ -1,4 +1,4 @@
-# 100 Millions Taxi Rides benchmark
+# 100 Millions Taxi Rides Benchmark
 
 CPU: Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz DDR 2666
 
