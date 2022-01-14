@@ -1,4 +1,4 @@
-# 100 Millions Taxi Rides Benchmark
+# 100 Millions Taxi Rides benchmark
 
 Simplified and fixed implementation of the benchmark: https://tech.marksblogg.com/benchmarks.html
 
