@@ -21,4 +21,4 @@ time in ms:
 
 ## TODO
 - not sure about k9-q3 results
-- would be good to retest q with parted mem-data only like k9
+- would be good to retest q with parted mem-data like k9
