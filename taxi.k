@@ -8,11 +8,4 @@ min{."\\t:1 select avg am by pc from t"}'!r
 min{."\\t:1 select count by d.month,pc from t"}'!r
 min{."\\t:1 select count by d.month,pc,_ td from t"}'!r
 
-\
-29
-177
-61
-tab
-!nyi
-
-select count by d.year,pc from t
+\\
