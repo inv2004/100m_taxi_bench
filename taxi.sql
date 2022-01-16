@@ -12,8 +12,3 @@ AS SELECT toDate('2017-01-01')+(number div 380000) as DT, rand()%4 AS CT, rand()
 -- clickhouse-benchmark --query "SELECT PC, avg(AM) FROM trips GROUP BY PC"
 -- clickhouse-benchmark --query "SELECT PC, toMonth(DT) AS mon, count() FROM trips GROUP BY PC, mon"
 -- clickhouse-benchmark --query "SELECT PC, toMonth(DT) AS mon, round(TD) AS distance, count() FROM trips GROUP BY PC, mon, distance"
-
--- 0.092 sec
--- 0.238 sec
--- 0.217 sec
--- 0.752 sec
