@@ -1,5 +1,7 @@
 # 100 Millions Taxi Rides benchmark
 
+Description: https://t.me/inv2004_dev_blog/39
+
 Simplified and fixed implementation of the benchmark: https://tech.marksblogg.com/benchmarks.html
 
 CPU: Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz DDR 2666
