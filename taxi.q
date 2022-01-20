@@ -5,7 +5,7 @@
 
 d:2017.01.01+key 365
 f:{[x;y] ([]dt:`p#x#y;ct:"x"$x?4;pc:"x"$x?9;am:"e"$x?50e;td:"e"$x?100e)}
-{(hsym `$string[.Q.par[`:.;x;`trips]],"/") set delete dt from f[380000;x]} each d
+{.Q.dd[.Q.par[`:.;x;`trips];`] set delete dt from f[380000;x]} each d
 
 \l .
 
