@@ -26,6 +26,7 @@ proc countGroupByAVX2*(a: openArray[uint8]): array[256, int] =
       result[2] += popcnt_u32 movemask_epi8 cmpeq_epi8(ymm, mask2)
       result[3] += popcnt_u32 movemask_epi8 cmpeq_epi8(ymm, mask3)
     i += avx2width
-  for i in i..<a.len:
+  while i < a.len:
     result[a[i]].inc
+    inc i
 

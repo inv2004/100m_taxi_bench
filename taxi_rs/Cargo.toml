@@ -7,11 +7,9 @@ edition = "2021"
 name = "taxi_bench"
 harness = false
 
-[dependencies]
+[dev-dependencies]
 rand = "*"
 lazy_static = "*"
-
-[dev-dependencies]
 criterion = "0.3"
 
 [profile.bench]
