@@ -1,13 +1,15 @@
+import taxi
+
 import criterion
 import random
 
-var VEC1 = newSeq[uint8](365*380000)
+type m256i* {.importc: "__m256i", header: "immintrin.h".} = object
+type m256* {.importc: "__m256", header: "immintrin.h".} = object
+
+const N = 365*380000
+var VEC1 = newSeq[uint8](N)
 for x in VEC1.mitems:
   x = uint8 rand(0..3)
-
-func countGroupBy(a: openArray[uint8]): array[256, int] =
-  for x in a:
-    inc result[x]
 
 var cfg = newDefaultConfig()
 # cfg.brief = true
@@ -16,6 +18,8 @@ cfg.budget = 1.0
 cfg.minSamples = 10
 
 benchmark cfg:
-  proc mergedCounter() {.measure.} =
-    doAssert countGroupBy(VEC1)[0] > 0
+  proc countGroupBy() {.measure.} =
+    doAssert countGroupBy(VEC1).sum() == N
 
+  proc countGroupByAVX2() {.measure.} =
+    doAssert countGroupByAVX2(VEC1).sum() == N
