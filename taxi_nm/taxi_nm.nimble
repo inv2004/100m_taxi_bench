@@ -1,11 +1,10 @@
 # Package
 
 version       = "0.1.0"
-author        = "alexander"
-description   = "A new awesome nimble package"
+author        = "inv2004"
+description   = "100m taxi bench q1"
 license       = "MIT"
 srcDir        = "src"
-bin           = @["taxi_nim"]
 
 
 # Dependencies
