@@ -1,5 +1,4 @@
 use core::arch::x86_64::{__m256i, _mm256_set1_epi8, _mm256_loadu_si256, _mm256_cmpgt_epi8, _mm256_cmpeq_epi8, _mm256_movemask_epi8, _popcnt32, _mm256_extract_epi8};
-use std::ptr::{addr_of};
 
 const AVX2WIDTH: usize = 32;
 
@@ -32,7 +31,7 @@ pub unsafe fn count_group_by_avx2_unsafe(a: &[u8]) -> [i64; 256] {
     let mut i = 0;
     while i < a.len() - AVX2WIDTH {
         let addr = &a[i];
-        let ymm = _mm256_loadu_si256(addr_of!(addr) as *const __m256i);
+        let ymm = _mm256_loadu_si256(addr as  *const _ as *const __m256i);
         if 0 < _popcnt32(_mm256_movemask_epi8(_mm256_cmpgt_epi8(ymm, mask3))) {
             result[_mm256_extract_epi8(ymm, 0) as usize] += 1;
             result[_mm256_extract_epi8(ymm, 1) as usize] += 1;

@@ -1,5 +1,5 @@
-{.passC: "-msse -msse3 -mssse3 -msse4 -mavx -mavx2".}
-{.passL: "-msse -msse3 -mssse3 -msse4 -mavx -mavx2".}
+{.passC: "-mavx2".}
+{.passL: "-mavx2".}
 
 type m256i* {.importc: "__m256i", header: "immintrin.h".} = object
 type m256* {.importc: "__m256", header: "immintrin.h".} = object
