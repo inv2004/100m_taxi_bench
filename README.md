@@ -1,6 +1,6 @@
 # 100 Millions Taxi Rides benchmark
 
-Details and description: https://t.me/inv2004_dev_blog/39
+**Blog Post:** https://t.me/inv2004_dev_blog/39
 
 Simplified and fixed implementation of the benchmark: https://tech.marksblogg.com/benchmarks.html
 
