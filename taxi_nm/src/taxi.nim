@@ -16,7 +16,7 @@ proc countGroupByAVX2*(a: openArray[uint8]): array[256, int] =
   let mask3 = set1_epi8(3)
   var i = 0
   while i < a.len-avx2width:
-    let ymm = loadu_byte(unsafeAddr a[i])
+    let ymm = loadu_byte(cast[ptr m256i](unsafeAddr a[i]))
     if 0 < popcnt_u32 movemask_epi8 cmpgt_epi8(ymm, mask3):
       unroll for off in 0..<avx2width:
         result[extract_epi8(ymm, off)].inc
