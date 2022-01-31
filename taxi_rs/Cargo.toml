@@ -7,6 +7,9 @@ edition = "2021"
 name = "taxi_bench"
 harness = false
 
+[dependencies]
+seq-macro = "0.3"
+
 [dev-dependencies]
 rand = "*"
 lazy_static = "*"
