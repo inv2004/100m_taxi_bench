@@ -7,6 +7,9 @@ edition = "2021"
 name = "taxi_bench"
 harness = false
 
+[dependencies]
+packed_simd = { version = "0.3.6", package = "packed_simd_2" }
+
 [dev-dependencies]
 rand = "*"
 lazy_static = "*"
@@ -20,3 +23,7 @@ rpath = false
 lto = true
 debug-assertions = false
 codegen-units = 1
+
+[[bin]]
+name = "taxi"
+

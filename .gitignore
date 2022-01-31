@@ -1,3 +1,4 @@
 /data
 /taxi_nm/bench/taxi_bench
 /taxi_rs/target
+/taxi_rs_safe/target
