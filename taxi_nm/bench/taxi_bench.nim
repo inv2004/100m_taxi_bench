@@ -20,3 +20,9 @@ benchmark cfg:
 
   proc countGroupByAVX2() {.measure.} =
     doAssert countGroupByAVX2(VEC1).sum() == N
+
+  proc countGroupByAVX2V2() {.measure.} =
+    doAssert countGroupByAVX2V2(VEC1).sum() == N
+
+  proc countGroupByAVX512() {.measure.} =
+    doAssert countGroupByAVX512(VEC1).sum() == N
