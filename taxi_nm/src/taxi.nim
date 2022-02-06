@@ -22,27 +22,6 @@ proc countGroupByAVX2*(a: openArray[uint8]): array[256, int64] =
       unroll for off in 0..<avx2width:
         result[mm256_extract_epi8(ymm, off)].inc
     else:
-      result[0] += popcnt_u32 mm256_movemask_epi8 mm256_cmpeq_epi8(ymm, mask0)
-      result[1] += popcnt_u32 mm256_movemask_epi8 mm256_cmpeq_epi8(ymm, mask1)
-      result[2] += popcnt_u32 mm256_movemask_epi8 mm256_cmpeq_epi8(ymm, mask2)
-      result[3] += popcnt_u32 mm256_movemask_epi8 mm256_cmpeq_epi8(ymm, mask3)
-    i += avx2width
-  while i < a.len:
-    result[a[i]].inc
-    inc i
-
-proc countGroupByAVX2V2*(a: openArray[uint8]): array[256, int64] =
-  let mask0 = mm256_set1_epi8(0)
-  let mask1 = mm256_set1_epi8(1)
-  let mask2 = mm256_set1_epi8(2)
-  let mask3 = mm256_set1_epi8(3)
-  var i = 0
-  while i <= a.len-avx2width:
-    let ymm = mm256_loadu_byte(cast[ptr m256i](unsafeAddr a[i]))
-    if 0 < popcnt_u32 mm256_movemask_epi8 mm256_cmpgt_epi8(ymm, mask3):
-      unroll for off in 0..<avx2width:
-        result[mm256_extract_epi8(ymm, off)].inc
-    else:
       result[0] += popcnt_u32 cvtmask32_u32 mm256_cmpeq_epi8_mask(ymm, mask0)
       result[1] += popcnt_u32 cvtmask32_u32 mm256_cmpeq_epi8_mask(ymm, mask1)
       result[2] += popcnt_u32 cvtmask32_u32 mm256_cmpeq_epi8_mask(ymm, mask2)
