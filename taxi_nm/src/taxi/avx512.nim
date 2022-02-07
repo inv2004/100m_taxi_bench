@@ -1,6 +1,8 @@
 {.passC: "-mavx512f -mavx512bw".}
 {.passL: "-mavx512f -mavx512bw".}
 
+import avx2
+
 type m512i* {.importc: "__m512i", header: "immintrin.h".} = object
 type mmask64* {.importc: "__mmask64", header: "immintrin.h".} = object
 
@@ -29,3 +31,6 @@ proc mm512_movemask_epi8*(a: m512i): int32
 
 proc mm512_extract_epi8*(a: m512i, off: int): byte
   {.importc: "_mm512_extract_epi8", header: "immintrin.h".}
+
+proc mm512_extracti64x4_epi64*(a: m512i, off: int): m256i
+  {.importc: "_mm512_extracti64x4_epi64", header: "immintrin.h".}

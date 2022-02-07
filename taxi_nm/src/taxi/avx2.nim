@@ -30,7 +30,5 @@ proc cvtmask32_u32*(a: mmask32): int32
 proc mm256_movemask_epi8*(a: m256i): int32
   {.importc: "_mm256_movemask_epi8", header: "immintrin.h".}
 
-proc mm256_extract_epi8*(a: m256i, off: int): byte
+proc mm256_extract_epi8*(a: m256i, off: int): int
   {.importc: "_mm256_extract_epi8", header: "immintrin.h".}
-
-
