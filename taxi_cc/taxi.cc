@@ -20,6 +20,7 @@ void group1(const std::vector<uint8_t> &v, std::array<int64_t, 256> &g) {
 
 constexpr void inc(uint8_t c, std::array<int64_t, 256> &g) {
   switch(c) {
+    case 0: g[0] += 1; break;
     case 1: g[1] += 1; break;
     case 2: g[2] += 1; break;
     case 3: g[3] += 1; break;
