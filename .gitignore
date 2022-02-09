@@ -2,3 +2,5 @@
 /taxi_nm/bench/taxi_bench
 /taxi_rs/target
 /taxi_rs_safe/target
+taxi_cc/taxi
+taxi_cc/.vscode/
