@@ -332,7 +332,6 @@ int main() {
   std::vector<uint8_t> v = {};
   std::array<int64_t, 256> g = {};
 
-  // for(int i = 0; i < 9710124; i++) {
   for(int i = 0; i < N; i++) {
     v.push_back((uint8_t) distr(gen));
   }
