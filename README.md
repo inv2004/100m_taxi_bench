@@ -4,9 +4,21 @@
 
 Simplified and fixed implementation of the benchmark: https://tech.marksblogg.com/benchmarks.html
 
-CPU: Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz DDR 2666
-
 365 days x 380000 rows x 10 bytes => ~1.387Gb
+
+CPU: 12th Gen Intel(R) Core(TM) i5-12600
+
+time in ms:
+
+|    | k9  | q -s 1 | q -s 12 | clickhouse | nim avx2 | nim avx512 |
+|----|-----|--------|---------|------------|----------|------------|
+| q1 | 16  | 67     | 13      | 15         | 8        | 6          |
+| q2 | 98  | 426    | 71      | 30         | 
+| q3 | 33  | 48     | 11      | 26         |
+| q4 | nyi | 787    | 436     | 70         |
+
+## Old
+CPU: Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz DDR 2666
 
 time in ms:
 

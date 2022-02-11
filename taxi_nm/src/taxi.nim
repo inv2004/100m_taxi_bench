@@ -2,8 +2,6 @@ import taxi/avx2
 import taxi/avx512
 import unrolled
 
-import strutils
-
 proc sum*(a: openArray[int64]): int64 =
   for x in a:
     result += int(x)
@@ -39,29 +37,6 @@ proc countGroupByAVX512*(a: openArray[uint8]): array[256, int64] =
   let mask2 = mm512_set1_epi8(2)
   let mask3 = mm512_set1_epi8(3)
   var i = 0
-
-  while i <= a.len-avx512width:
-    let ymm = mm512_loadu_byte(cast[ptr m512i](unsafeAddr a[i]))
-    if 0 == cvtmask64_u64 mm512_cmpgt_epi8_mask(ymm, mask3):
-      result[0] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask0)
-      result[1] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask1)
-      result[2] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask2)
-      result[3] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask3)
-    else:
-      for off in i..<i+avx512width:
-        result[a[off]].inc
-    i += avx512width
-  while i < a.len:
-    result[a[i]].inc
-    inc i
-
-proc countGroupByAVX512Extract*(a: openArray[uint8]): array[256, int64] =
-  let mask0 = mm512_set1_epi8(0)
-  let mask1 = mm512_set1_epi8(1)
-  let mask2 = mm512_set1_epi8(2)
-  let mask3 = mm512_set1_epi8(3)
-  var i = 0
-
   while i <= a.len-avx512width:
     let ymm = mm512_loadu_byte(cast[ptr m512i](unsafeAddr a[i]))
     if 0 == cvtmask64_u64 mm512_cmpgt_epi8_mask(ymm, mask3):
@@ -81,32 +56,22 @@ proc countGroupByAVX512Extract*(a: openArray[uint8]): array[256, int64] =
     result[a[i]].inc
     inc i
 
-proc countGroupByAVX512Extract2*(a: openArray[uint8]): array[256, int64] =
+proc countGroupByAVX512Limited*(a: openArray[uint8]): array[256, int64] =
   let mask0 = mm512_set1_epi8(0)
   let mask1 = mm512_set1_epi8(1)
   let mask2 = mm512_set1_epi8(2)
   let mask3 = mm512_set1_epi8(3)
   var i = 0
-
   while i <= a.len-avx512width:
     let ymm = mm512_loadu_byte(cast[ptr m512i](unsafeAddr a[i]))
-    if 0 == cvtmask64_u64 mm512_cmpgt_epi8_mask(ymm, mask3):
-      result[0] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask0)
-      result[1] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask1)
-      result[2] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask2)
-      result[3] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask3)
-    else:
-      let ymmLow = mm512_extracti64x4_epi64(ymm, 0)
-      let ymmHigh = mm512_extracti64x4_epi64(ymm, 1)
-      unroll for off in 0..<avx2width:
-        result[mm256_extract_epi8(ymmLow, off)].inc
-      unroll for off in 0..<avx2width:
-        result[mm256_extract_epi8(ymmHigh, off)].inc
+    result[0] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask0)
+    result[1] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask1)
+    result[2] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask2)
+    result[3] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask3)
     i += avx512width
   while i < a.len:
     result[a[i]].inc
     inc i
-
 
 when isMainModule:
   const N = 64
