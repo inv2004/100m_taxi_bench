@@ -34,3 +34,12 @@ proc mm512_extract_epi8*(a: m512i, off: int): byte
 
 proc mm512_extracti64x4_epi64*(a: m512i, off: int): m256i
   {.importc: "_mm512_extracti64x4_epi64", header: "immintrin.h".}
+
+proc mm512_shuffle_epi32*(a: m512i, off: int): m512i
+  {.importc: "_mm512_shuffle_epi32", header: "immintrin.h".}
+
+proc mm512_cvtsi512_si32 *(a: m512i): int64
+  {.importc: "_mm512_cvtsi512_si32 ", header: "immintrin.h".}
+
+proc mm512_alignr_epi32 *(a, b: m512i, off: int): m512i
+  {.importc: "_mm512_alignr_epi32 ", header: "immintrin.h".}

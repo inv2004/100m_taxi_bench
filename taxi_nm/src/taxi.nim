@@ -2,6 +2,8 @@ import taxi/avx2
 import taxi/avx512
 import unrolled
 
+import strutils
+
 proc sum*(a: openArray[int64]): int64 =
   for x in a:
     result += int(x)
@@ -37,6 +39,55 @@ proc countGroupByAVX512*(a: openArray[uint8]): array[256, int64] =
   let mask2 = mm512_set1_epi8(2)
   let mask3 = mm512_set1_epi8(3)
   var i = 0
+
+  while i <= a.len-avx512width:
+    let ymm = mm512_loadu_byte(cast[ptr m512i](unsafeAddr a[i]))
+    if 0 == cvtmask64_u64 mm512_cmpgt_epi8_mask(ymm, mask3):
+      result[0] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask0)
+      result[1] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask1)
+      result[2] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask2)
+      result[3] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask3)
+    else:
+      for off in i..<i+avx512width:
+        result[a[off]].inc
+    i += avx512width
+  while i < a.len:
+    result[a[i]].inc
+    inc i
+
+proc countGroupByAVX512Extract*(a: openArray[uint8]): array[256, int64] =
+  let mask0 = mm512_set1_epi8(0)
+  let mask1 = mm512_set1_epi8(1)
+  let mask2 = mm512_set1_epi8(2)
+  let mask3 = mm512_set1_epi8(3)
+  var i = 0
+
+  while i <= a.len-avx512width:
+    let ymm = mm512_loadu_byte(cast[ptr m512i](unsafeAddr a[i]))
+    if 0 == cvtmask64_u64 mm512_cmpgt_epi8_mask(ymm, mask3):
+      result[0] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask0)
+      result[1] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask1)
+      result[2] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask2)
+      result[3] += popcnt_u64 cvtmask64_u64 mm512_cmpeq_epi8_mask(ymm, mask3)
+    else:
+      unroll for off in 0..<(avx512width div 4):
+        let low32 = mm512_cvtsi512_si32 mm512_alignr_epi32(ymm, ymm, off)
+        result[0xFF and low32].inc
+        result[0xFF and (low32 shr 8)].inc
+        result[0xFF and (low32 shr 16)].inc
+        result[0xFF and (low32 shr 24)].inc
+    i += avx512width
+  while i < a.len:
+    result[a[i]].inc
+    inc i
+
+proc countGroupByAVX512Extract2*(a: openArray[uint8]): array[256, int64] =
+  let mask0 = mm512_set1_epi8(0)
+  let mask1 = mm512_set1_epi8(1)
+  let mask2 = mm512_set1_epi8(2)
+  let mask3 = mm512_set1_epi8(3)
+  var i = 0
+
   while i <= a.len-avx512width:
     let ymm = mm512_loadu_byte(cast[ptr m512i](unsafeAddr a[i]))
     if 0 == cvtmask64_u64 mm512_cmpgt_epi8_mask(ymm, mask3):
@@ -67,6 +118,7 @@ when isMainModule:
       inc i
     echo VEC1
 
+    echo countGroupBy(VEC1)
     echo countGroupByAVX512(VEC1)
 
   main()
