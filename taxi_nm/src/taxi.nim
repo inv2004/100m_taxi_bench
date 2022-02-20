@@ -102,6 +102,7 @@ proc avgGroupByAVX512Limited*(a: openArray[byte], b: openArray[float64]): array[
   let mask5 = mm512_set1_epi64(5)
   let mask6 = mm512_set1_epi64(6)
   let mask7 = mm512_set1_epi64(7)
+  let mask8 = mm512_set1_epi64(8)
   var i = 0
   while i <= a.len-8:
     # let ymm = mm512_loadu_byte(cast[ptr m512i](unsafeAddr a[i]))
@@ -116,6 +117,7 @@ proc avgGroupByAVX512Limited*(a: openArray[byte], b: openArray[float64]): array[
     avx512proc(5)
     avx512proc(6)
     avx512proc(7)
+    avx512proc(8)
 
     i += 8
   while i < a.len:
