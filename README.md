@@ -10,12 +10,12 @@ CPU: 12th Gen Intel(R) Core(TM) i5-12600
 
 time in ms:
 
-|    | k9  | q -s 1 | q -s 12 | clickhouse | nim avx2 | nim avx512 |
-|----|-----|--------|---------|------------|----------|------------|
-| q1 | 16  | 67     | 13      | 15         | 8        | 6          |
-| q2 | 98  | 426    | 71      | 30         | nyi      | nyi        |
-| q3 | 33  | 48     | 11      | 26         | nyi      | nyi        |
-| q4 | nyi | 787    | 436     | 70         | nyi      | nyi        |
+|    | k9  | q -s 1 | q -s 12 | clickhouse | nim-naive | nim avx2 | nim avx512 |
+|----|-----|--------|---------|------------|-----------|----------|------------|
+| q1 | 16  | 67     | 13      | 15         | 37        | 8        | 6          |
+| q2 | 98  | 426    | 71      | 30         | 80        | nyi      | nyi        |
+| q3 | 33  | 48     | 11      | 26         | nyi       | nyi      | nyi        |
+| q4 | nyi | 787    | 436     | 70         | nyi       | nyi      | nyi        |
 
 ## Old
 CPU: Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz DDR 2666

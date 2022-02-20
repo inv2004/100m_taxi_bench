@@ -3,13 +3,23 @@
 
 import avx2
 
+import strutils
+
 type m512i* {.importc: "__m512i", header: "immintrin.h".} = object
+type m512d* {.importc: "__m512d", header: "immintrin.h".} = object
 type mmask64* {.importc: "__mmask64", header: "immintrin.h".} = object
+type mmask8* {.importc: "__mmask8", header: "immintrin.h".} = object
 
 const avx512width* = 64
 
+proc `$`*(m: mmask8): string =
+  toBin int(cast[uint8](m)), 8*sizeof(uint8)
+
 proc mm512_set1_epi8*(b: int8 | uint8): m512i
   {.importc: "_mm512_set1_epi8", header: "immintrin.h".}
+
+proc mm512_set1_epi64*(a: int64): m512i
+  {.importc: "_mm512_set1_epi64", header: "immintrin.h".}
 
 proc mm512_loadu_byte*(p: ptr m512i): m512i
   {.importc: "_mm512_loadu_si512", header: "immintrin.h".}
@@ -38,8 +48,21 @@ proc mm512_extracti64x4_epi64*(a: m512i, off: int): m256i
 proc mm512_shuffle_epi32*(a: m512i, off: int): m512i
   {.importc: "_mm512_shuffle_epi32", header: "immintrin.h".}
 
-proc mm512_cvtsi512_si32 *(a: m512i): int64
+proc mm512_cvtsi512_si32*(a: m512i): int64
   {.importc: "_mm512_cvtsi512_si32 ", header: "immintrin.h".}
 
-proc mm512_alignr_epi32 *(a, b: m512i, off: int): m512i
+proc mm512_alignr_epi32*(a, b: m512i, off: int): m512i
   {.importc: "_mm512_alignr_epi32 ", header: "immintrin.h".}
+
+proc mm512_cmpeq_epi64_mask*(a, b: m512i): mmask8
+  {.importc: "_mm512_cmpeq_epi64_mask ", header: "immintrin.h".}
+
+proc mm512_loadu_float*(p: ptr float64): m512d
+  {.importc: "_mm512_loadu_pd", header: "immintrin.h".}
+
+proc mm512_maskz_mov_pd*(m: mmask8, a: m512d): m512d
+  {.importc: "_mm512_maskz_mov_pd ", header: "immintrin.h".}
+
+proc mm512_reduce_add_pd*(a: m512d): float64
+  {.importc: "_mm512_reduce_add_pd ", header: "immintrin.h".}
+

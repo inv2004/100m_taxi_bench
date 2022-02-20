@@ -2,6 +2,10 @@ import taxi/avx2
 import taxi/avx512
 import unrolled
 
+type Avg = tuple
+  sum: float64
+  cnt: int64
+
 proc sum*(a: openArray[int64]): int64 =
   for x in a:
     result += int(x)
@@ -73,17 +77,22 @@ proc countGroupByAVX512Limited*(a: openArray[uint8]): array[256, int64] =
     result[a[i]].inc
     inc i
 
-when isMainModule:
-  const N = 64
-  proc main() =
-    var VEC1 = newSeq[uint8](N)
-    var i = 0
-    for x in VEC1.mitems:
-      x = byte(i mod 5)
-      inc i
-    echo VEC1
+proc avgGroupBy*(a: var openArray[byte], b:openArray[float64]): array[256, Avg] =
+  for i, idx in a:
+    result[idx].sum += b[i]
+    inc result[idx].cnt
 
-    echo countGroupBy(VEC1)
-    echo countGroupByAVX512(VEC1)
+when isMainModule:
+  const N = 8
+  proc main() =
+    var VEC1 = newSeq[byte](N)
+    var VECF = newSeq[float64](N)
+    for i in 0..<N:
+      VEC1[i] = byte(i mod 5)
+      VECF[i] = float64(i mod 50)
+    echo VEC1
+    echo VECF
+
+    echo avgGroupBy(VEC1, VECF)
 
   main()
