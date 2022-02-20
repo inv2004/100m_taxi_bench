@@ -9,6 +9,8 @@ for x in VEC1.mitems:
   x = uint8 rand(0..3)
 
 var VECI = newSeq[int64](N)
+for x in VECI.mitems:
+  x = rand(0..8)
 for x in VEC1.mitems:
   x = uint8 rand(0..9)
 var VECF = newSeq[float64](N)
@@ -23,8 +25,8 @@ cfg.budget = 1.0
 cfg.minSamples = 10
 
 benchmark cfg:
-  proc countGroupBy() {.measure.} =
-    doAssert countGroupBy(VEC1).sum() == N
+  # proc countGroupBy() {.measure.} =
+  #   doAssert countGroupBy(VEC1).sum() == N
 
   # proc countGroupByAVX2() {.measure.} =
   #   doAssert countGroupByAVX2(VEC1).sum() == N
@@ -35,8 +37,8 @@ benchmark cfg:
   # proc countGroupByAVX512Limited() {.measure.} =
   #   doAssert countGroupByAVX512Limited(VEC1).sum() > 0
 
-  # proc countGroupByAVX512Limited8() {.measure.} =
-  #   doAssert countGroupByAVX512Limited8(VEC1).sum() > 0
-
   proc avgGroupBy() {.measure.} =
     doAssert avgGroupBy(VEC1, VECF)[0].cnt > 0
+
+  proc avgGroupByAVX512Limited() {.measure.} =
+    doAssert avgGroupByAVX512Limited(VEC1, VECF)[0].cnt > 0

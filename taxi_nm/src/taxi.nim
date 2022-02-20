@@ -2,6 +2,9 @@ import taxi/avx2
 import taxi/avx512
 import unrolled
 
+import bitops
+import macros
+
 type Avg = tuple
   sum: float64
   cnt: int64
@@ -77,10 +80,49 @@ proc countGroupByAVX512Limited*(a: openArray[uint8]): array[256, int64] =
     result[a[i]].inc
     inc i
 
-proc avgGroupBy*(a: var openArray[byte], b:openArray[float64]): array[256, Avg] =
+proc avgGroupBy*(a: var openArray[byte], b: openArray[float64]): array[256, Avg] =
   for i, idx in a:
     result[idx].sum += b[i]
     inc result[idx].cnt
+
+macro avx512proc(i: int) =
+  let m = ident("m" & $intVal(i))
+  let mask = ident("mask" & $intVal(i))
+  result = quote do:
+    let `m` = mm512_cmpeq_epi64_mask(ymm, `mask`)
+    result[`i`].sum += mm512_reduce_add_pd mm512_maskz_mov_pd(`m`, fmm)
+    result[`i`].cnt += popcount(cast[byte](`m`))
+
+proc avgGroupByAVX512Limited*(a: openArray[byte], b: openArray[float64]): array[256, Avg] =
+  let mask0 = mm512_set1_epi64(0)
+  let mask1 = mm512_set1_epi64(1)
+  let mask2 = mm512_set1_epi64(2)
+  let mask3 = mm512_set1_epi64(3)
+  let mask4 = mm512_set1_epi64(4)
+  let mask5 = mm512_set1_epi64(5)
+  let mask6 = mm512_set1_epi64(6)
+  let mask7 = mm512_set1_epi64(7)
+  var i = 0
+  while i <= a.len-8:
+    # let ymm = mm512_loadu_byte(cast[ptr m512i](unsafeAddr a[i]))
+    let ymm = mm512_set_epi64(int(a[i+7]), int(a[i+6]), int(a[i+5]), int(a[i+4]), int(a[i+3]), int(a[i+2]), int(a[i+1]), int(a[i+0]))
+    let fmm = mm512_loadu_float(unsafeAddr b[i])
+
+    avx512proc(0)
+    avx512proc(1)
+    avx512proc(2)
+    avx512proc(3)
+    avx512proc(4)
+    avx512proc(5)
+    avx512proc(6)
+    avx512proc(7)
+
+    i += 8
+  while i < a.len:
+    let idx = a[i]
+    result[idx].sum += b[i]
+    inc result[idx].cnt
+    inc i
 
 when isMainModule:
   const N = 8
@@ -93,6 +135,6 @@ when isMainModule:
     echo VEC1
     echo VECF
 
-    echo avgGroupBy(VEC1, VECF)
+    echo avgGroupByAVX512Limited(VEC1, VECF)
 
   main()
