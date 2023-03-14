@@ -10,7 +10,7 @@ srcDir        = "src"
 # Dependencies
 
 requires "nim >= 1.6.2"
-requires "unroll"
+requires "unrolled"
 
 task bench, "bench":
   exec """nim c --opt:speed --passC:'-flto -march=native -Ofast' --passL:'-flto -march=native -Ofast' -d:danger --cc:clang --gc:refc -r bench/taxi_bench.nim"""
